@@ -1,0 +1,29 @@
+// static variables : // take the same value after return the first result
+// static data_type var_name = var_value;
+// 1
+int fun()
+{
+    static int count = 0;
+    count++;
+    return count;
+}
+// to
+int main()
+{
+    printf("%d ", fun());
+    printf("%d ", fun());
+    return 0;
+}
+// 2
+int main()
+{
+    static int x; // 0
+    int y; // some garbage value
+    printf("%d \n%d", x, y);
+}
+
+// With BUFFER_SIZE = 1, you read the file one character at a time. This ensures that your program processes each character individually and stops as soon as it encounters a newline (\n).
+
+// It Matches the Return Type of read:
+//              The read function in C returns the number of bytes read as a ssize_t value. This ensures bytes_read can directly store the result of read without type mismatches.
+// ssize_t is a standard type specifically designed to handle sizes or counts of data. It ensures your code works consistently across different systems.
