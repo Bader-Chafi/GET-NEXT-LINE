@@ -6,7 +6,7 @@
 /*   By: bchafi <bchafi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 14:47:54 by bchafi            #+#    #+#             */
-/*   Updated: 2024/11/26 14:59:04 by bchafi           ###   ########.fr       */
+/*   Updated: 2024/11/26 21:43:09 by bchafi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,22 +88,4 @@ char	*ft_strchr(const char *s, int c)
 		s++;
 	}
 	return (NULL);
-}
-
-char	*ft_strncpy(char *dst, const char *src, size_t len)
-{
-	size_t	i;
-
-	i = 0;
-	while (i < len && src[i] != '\0')
-	{
-		dst[i] = src[i];
-		i++;
-	}
-	while (i < len)
-	{
-		dst[i] = '\0';
-		i++;
-	}
-	return (dst);
 }
