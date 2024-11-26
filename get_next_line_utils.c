@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_next_line_utils.c                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bchafi <bchafi@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/26 14:47:54 by bchafi            #+#    #+#             */
+/*   Updated: 2024/11/26 14:59:04 by bchafi           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "get_next_line.h"
 
@@ -9,6 +20,20 @@ size_t	ft_strlen(const char *s)
 	while (s[i] != '\0')
 		i++;
 	return (i);
+}
+
+char	*ft_strcpy(char *dst, const char *src)
+{
+	int	i;
+
+	i = 0;
+	while (src[i])
+	{
+		dst[i] = src[i];
+		i++;
+	}
+	dst[i] = '\0';
+	return (dst);
 }
 
 char	*ft_strdup(const char *s1)
@@ -31,26 +56,22 @@ char	*ft_strdup(const char *s1)
 	return (dup);
 }
 
-size_t	ft_strlcat(char *dst, const char *src, size_t dstsize)
+char	*ft_strcat(char *s1, const char *s2)
 {
-	size_t	i;
-	size_t	lendest;
-	size_t	lensrc;
+	int	i;
+	int	j;
 
-	lensrc = ft_strlen(src);
-	if (!dst && dstsize == 0)
-		return (lensrc);
-	lendest = ft_strlen(dst);
 	i = 0;
-	if (dstsize <= lendest)
-		return (dstsize + lensrc);
-	while (i < lensrc && lendest + i + 1 < dstsize)
-	{
-		dst[lendest + i] = src[i];
+	j = 0;
+	while (s1[i])
 		i++;
+	while (s2[j])
+	{
+		s1[i + j] = s2[j];
+		j++;
 	}
-	dst[lendest + i] = '\0';
-	return (lendest + lensrc);
+	s1[i + j] = '\0';
+	return (s1);
 }
 
 char	*ft_strchr(const char *s, int c)
@@ -58,13 +79,31 @@ char	*ft_strchr(const char *s, int c)
 	char	char_find;
 
 	char_find = (char)c;
+	if (char_find == '\0')
+		return ((char *)s);
 	while (*s)
 	{
 		if (*s == char_find)
 			return ((char *)s);
 		s++;
 	}
-	if (char_find == '\0')
-		return ((char *)s);
 	return (NULL);
+}
+
+char	*ft_strncpy(char *dst, const char *src, size_t len)
+{
+	size_t	i;
+
+	i = 0;
+	while (i < len && src[i] != '\0')
+	{
+		dst[i] = src[i];
+		i++;
+	}
+	while (i < len)
+	{
+		dst[i] = '\0';
+		i++;
+	}
+	return (dst);
 }

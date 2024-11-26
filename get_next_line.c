@@ -1,76 +1,73 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bchafi <bchafi@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/26 14:47:43 by bchafi            #+#    #+#             */
+/*   Updated: 2024/11/26 21:29:43 by bchafi           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-// #include "get_next_line.h"
-// #include <libc.h>   // all
-// #include <fcntl.h>  // O_CREAT
-// #include <unistd.h> // read
-// #include <stdio.h>  // printf
-// #include <stdlib.h> // malloc
+#include "get_next_line.h"
 
-#include <fcntl.h>
-#include <unistd.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-
-#define BUFFER_SIZE 1
-
-char *get_next_line(int fd)
+static int frees(char *newst, char *oldst)
 {
-    char buffer[BUFFER_SIZE + 1];
-    long bytes_read;
-    static char *str = NULL;
-    char *temp;
-    char *line;
-    int i = 0;
-
-    if (fd < 0) // || BUFFER_SIZE <= 0
-        return (NULL);
-
-    while ((bytes_read = read(fd, buffer, BUFFER_SIZE)) > 0)
-    {
-        buffer[bytes_read] = '\0';
-        if (!str)
-            str = strdup(buffer);
-        else
-        {
-            temp = str;
-            str = malloc(strlen(temp) + bytes_read + 1);
-            strcpy(str, temp);
-            strcat(str, buffer);
-            free(temp);
-        }
-        if (strchr(buffer, '\n'))
-            break;
-    }
-
-    if (!str || str[0] == '\0')
-        return (NULL);
-
-    while (str[i] && str[i] != '\n')
-        i++;
-
-    line = malloc(i + 2);
-    strncpy(line, str, i + (str[i] == '\n'));
-    line[i + (str[i] == '\n')] = '\0';
-
-    temp = str;
-    str = strdup(str + i + (str[i] == '\n'));
-    free(temp);
-
-    return (line);
+	if (!newst)
+	{
+		free(oldst);
+		newst = NULL;
+		return (0);
+	}
+	return (1);
 }
 
-int main()
+static int countI(char *str)
 {
-    int fd = open("test.txt", O_RDONLY);
-    char *line;
+	int i;
 
-    while ((line = get_next_line(fd)) != NULL)
-    {
-        printf("%s", line);
-        free(line);
-    }
+	i = 0;
+	while (str[i] && str[i] != '\n')
+		i++;
+	return (i);
+}
 
-    close(fd);
-    return 0;
+char	*get_next_line(int fd)
+{
+	static char		*str;
+	char			buffer[BUFFER_SIZE + 1];
+	char			*line, *temp;
+	int				bytes_read, i;
+
+	while ((bytes_read = read(fd, buffer, BUFFER_SIZE)) > 0)
+	{
+		buffer[bytes_read] = '\0';
+		temp = str;
+		if (!str)
+			str = ft_strdup(buffer);
+		else
+		{
+			str = malloc(ft_strlen(temp) + bytes_read + 1);
+			if (!frees(str, temp))
+				return (NULL);
+			ft_strcpy(str, temp);
+			ft_strcat(str, buffer);
+			free(temp);
+		}
+		if (ft_strchr(buffer, '\n'))
+			break ;
+	}
+	if (bytes_read < 0 || !str || !*str)
+		return (free(str), str = NULL, NULL);
+	i = countI(str);
+	line = malloc(i + 1 + (str[i] == '\n'));
+	if (!line)
+		return (free(str), str = NULL, NULL);
+	ft_strncpy(line, str, i + (str[i] == '\n'));
+	line[i + (str[i] == '\n')] = '\0';
+	temp = str;
+	str = ft_strdup(str + i + (str[i] == '\n'));
+	free(temp);
+	return (line);
 }
