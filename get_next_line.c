@@ -5,14 +5,14 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: bchafi <bchafi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/26 14:47:43 by bchafi            #+#    #+#             */
-/*   Updated: 2024/11/26 21:43:37 by bchafi           ###   ########.fr       */
+/*   Created: 2024/11/27 16:44:04 by bchafi            #+#    #+#             */
+/*   Updated: 2024/11/28 13:41:01 by bchafi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char	*ft_strncpy(char *dst, const char *src, size_t len)
+static char	*ft_strncpy(char *dst, const char *src, size_t len)
 {
 	size_t	i;
 
@@ -30,9 +30,9 @@ char	*ft_strncpy(char *dst, const char *src, size_t len)
 	return (dst);
 }
 
-static int countI(char *str)
+static int	counti(char *str)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (str[i] && str[i] != '\n')
@@ -46,7 +46,8 @@ static char	*read_and_update_str(int fd, char *str)
 	char	*temp;
 	int		bytes_read;
 
-	while ((bytes_read = read(fd, buffer, BUFFER_SIZE)) > 0)
+	bytes_read = read(fd, buffer, BUFFER_SIZE);
+	while (bytes_read > 0)
 	{
 		buffer[bytes_read] = '\0';
 		temp = str;
@@ -57,12 +58,11 @@ static char	*read_and_update_str(int fd, char *str)
 			str = malloc(ft_strlen(temp) + bytes_read + 1);
 			if (!str)
 				return (free(temp), NULL);
-			ft_strcpy(str, temp);
-			ft_strcat(str, buffer);
-			free(temp);
+			(1) && (ft_strcpy(str, temp), free(temp), ft_strcat(str, buffer));
 		}
 		if (ft_strchr(buffer, '\n'))
 			break ;
+		bytes_read = read(fd, buffer, BUFFER_SIZE);
 	}
 	if (bytes_read < 0)
 		return (free(str), NULL);
@@ -77,7 +77,7 @@ static char	*extract_line(char **str)
 
 	if (!*str || !**str)
 		return (free(*str), *str = NULL, NULL);
-	i = countI(*str);
+	i = counti(*str);
 	line = malloc(i + 1 + ((*str)[i] == '\n'));
 	if (!line)
 		return (free(*str), *str = NULL, NULL);

@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_utils.c                              :+:      :+:    :+:   */
+/*   get_next_line_utils_bonus.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bchafi <bchafi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/27 16:43:55 by bchafi            #+#    #+#             */
-/*   Updated: 2024/11/27 16:43:59 by bchafi           ###   ########.fr       */
+/*   Created: 2024/11/27 16:43:49 by bchafi            #+#    #+#             */
+/*   Updated: 2024/11/27 16:43:50 by bchafi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 size_t	ft_strlen(const char *s)
 {
@@ -22,7 +22,7 @@ size_t	ft_strlen(const char *s)
 	return (i);
 }
 
-char	*ft_strcpy(char *dst, const char *src)
+char	*cpy(char *dst, const char *src)
 {
 	int	i;
 
@@ -56,7 +56,7 @@ char	*ft_strdup(const char *s1)
 	return (dup);
 }
 
-char	*ft_strcat(char *s1, const char *s2)
+char	*cat(char *s1, const char *s2)
 {
 	int	i;
 	int	j;

@@ -1,3 +1,0 @@
-BHere’s a simple main function to test your get_next_line implementation along with the helper functions 1
-Here’s a simple main function to test your get_next_line implementation along with the helper function 2
-Here’s a simple main function to test your get_next_line implementation along with 3
