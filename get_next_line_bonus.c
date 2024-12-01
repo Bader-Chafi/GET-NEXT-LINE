@@ -6,7 +6,7 @@
 /*   By: bchafi <bchafi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 16:43:35 by bchafi            #+#    #+#             */
-/*   Updated: 2024/11/27 17:57:48 by bchafi           ###   ########.fr       */
+/*   Updated: 2024/12/01 08:34:27 by bchafi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,6 +134,6 @@ char	*get_next_line(int fd)
 	}
 	line = extract_line(&current->buffer);
 	if (!line)
-		free_fd_node(&fd_list, fd);
+		free_fd_node(&fd_list, fd);	
 	return (line);
 }

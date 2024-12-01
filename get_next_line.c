@@ -6,7 +6,7 @@
 /*   By: bchafi <bchafi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 16:44:04 by bchafi            #+#    #+#             */
-/*   Updated: 2024/11/28 13:41:01 by bchafi           ###   ########.fr       */
+/*   Updated: 2024/11/30 23:37:08 by bchafi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,9 @@ static int	counti(char *str)
 
 static char	*read_and_update_str(int fd, char *str)
 {
-	char	buffer[BUFFER_SIZE + 1];
-	char	*temp;
-	int		bytes_read;
+	char		buffer[BUFFER_SIZE + 1];
+	char		*temp;
+	ssize_t		bytes_read;
 
 	bytes_read = read(fd, buffer, BUFFER_SIZE);
 	while (bytes_read > 0)
@@ -74,17 +74,19 @@ static char	*extract_line(char **str)
 	char	*line;
 	char	*temp;
 	int		i;
+	int		num;
 
 	if (!*str || !**str)
 		return (free(*str), *str = NULL, NULL);
 	i = counti(*str);
-	line = malloc(i + 1 + ((*str)[i] == '\n'));
+	num = (*str)[i] == '\n';
+	line = malloc(i + 1 + num);
 	if (!line)
 		return (free(*str), *str = NULL, NULL);
-	ft_strncpy(line, *str, i + ((*str)[i] == '\n'));
-	line[i + ((*str)[i] == '\n')] = '\0';
+	ft_strncpy(line, *str, i + num);
+	line[i + num] = '\0';
 	temp = *str;
-	*str = ft_strdup(*str + i + ((*str)[i] == '\n'));
+	*str = ft_strdup(*str + i + num);
 	free(temp);
 	return (line);
 }
