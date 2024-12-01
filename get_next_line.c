@@ -6,7 +6,7 @@
 /*   By: bchafi <bchafi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 16:44:04 by bchafi            #+#    #+#             */
-/*   Updated: 2024/11/30 23:37:08 by bchafi           ###   ########.fr       */
+/*   Updated: 2024/12/01 22:21:54 by bchafi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static int	counti(char *str)
 
 static char	*read_and_update_str(int fd, char *str)
 {
-	char		buffer[BUFFER_SIZE + 1];
+	char		*buffer = malloc((BUFFER_SIZE * sizeof(char)) + 1);
 	char		*temp;
 	ssize_t		bytes_read;
 

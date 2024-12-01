@@ -6,7 +6,7 @@
 /*   By: bchafi <bchafi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 16:43:35 by bchafi            #+#    #+#             */
-/*   Updated: 2024/12/01 08:34:27 by bchafi           ###   ########.fr       */
+/*   Updated: 2024/12/01 22:52:01 by bchafi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static t_fd_list	*get_fd_node(t_fd_list **head, int fd)
 
 static char	*read_up_buffer(int fd, char *buffer)
 {
-	char	temp_buffer[BUFFER_SIZE + 1];
+	char	*temp_buffer = malloc(sizeof(BUFFER_SIZE) + 1);
 	char	*temp;
 	ssize_t	bytes_read;
 

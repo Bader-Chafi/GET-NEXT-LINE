@@ -6,7 +6,7 @@
 /*   By: bchafi <bchafi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 16:43:43 by bchafi            #+#    #+#             */
-/*   Updated: 2024/11/27 16:43:44 by bchafi           ###   ########.fr       */
+/*   Updated: 2024/12/01 23:18:20 by bchafi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,10 @@
 # include <fcntl.h>
 # include <unistd.h>
 # include <stdlib.h>
+
+# ifndef BUFFER_SIZE
+# define BUFFER_SIZE 42
+# endif
 
 typedef struct s_fd_list
 {
