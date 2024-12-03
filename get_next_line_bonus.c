@@ -6,7 +6,7 @@
 /*   By: bchafi <bchafi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 16:43:35 by bchafi            #+#    #+#             */
-/*   Updated: 2024/12/01 22:52:01 by bchafi           ###   ########.fr       */
+/*   Updated: 2024/12/03 22:38:24 by bchafi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,30 +35,33 @@ static t_fd_list	*get_fd_node(t_fd_list **head, int fd)
 
 static char	*read_up_buffer(int fd, char *buffer)
 {
-	char	*temp_buffer = malloc(sizeof(BUFFER_SIZE) + 1);
+	char	*temp_buffer;
 	char	*temp;
 	ssize_t	bytes_read;
 
+	temp_buffer = malloc((BUFFER_SIZE + 1) * sizeof(char));
+	if (!temp_buffer)
+		return (free(buffer), buffer = NULL, NULL);
 	bytes_read = read(fd, temp_buffer, BUFFER_SIZE);
 	while (bytes_read > 0)
 	{
-		temp_buffer[bytes_read] = '\0';
-		temp = buffer;
+		(1) && (temp_buffer[bytes_read] = '\0', temp = buffer);
 		if (!buffer)
 			buffer = ft_strdup(temp_buffer);
 		else
 		{
 			buffer = malloc(ft_strlen(temp) + bytes_read + 1);
 			if (!buffer)
-				return (free(temp), NULL);
-			(1) && (cpy(buffer, temp), free(temp), cat(buffer, temp_buffer));
+				return (free(temp), temp = NULL, free(temp_buffer), temp_buffer = NULL, NULL);
+			(1) && (cpy(buffer, temp), free(temp), temp = NULL, cat(buffer, temp_buffer));
 		}
 		if (ft_strchr(temp_buffer, '\n'))
 			break ;
 		bytes_read = read(fd, temp_buffer, BUFFER_SIZE);
 	}
+	(1) && (free(temp_buffer), temp_buffer = NULL);
 	if (bytes_read < 0)
-		return (free(buffer), NULL);
+		return (free(buffer), buffer = NULL, NULL);
 	return (buffer);
 }
 
@@ -111,7 +114,7 @@ static char	*extract_line(char **buffer)
 	(1) && (line[j] = '\0', temp = *buffer);
 	*buffer = ft_strdup(*buffer + len);
 	if (!*buffer)
-		return (free(temp), free(line), NULL);
+		return (free(temp), temp = NULL, free(line), NULL);
 	return (free(temp), line);
 }
 
