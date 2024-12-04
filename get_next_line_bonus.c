@@ -6,7 +6,7 @@
 /*   By: bchafi <bchafi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 16:43:35 by bchafi            #+#    #+#             */
-/*   Updated: 2024/12/03 22:38:24 by bchafi           ###   ########.fr       */
+/*   Updated: 2024/12/04 16:28:31 by bchafi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,36 +33,32 @@ static t_fd_list	*get_fd_node(t_fd_list **head, int fd)
 	return (node);
 }
 
-static char	*read_up_buffer(int fd, char *buffer)
+static char	*read_up_buffer(int fd, char *buf, char *t_buf)
 {
-	char	*temp_buffer;
 	char	*temp;
 	ssize_t	bytes_read;
 
-	temp_buffer = malloc((BUFFER_SIZE + 1) * sizeof(char));
-	if (!temp_buffer)
-		return (free(buffer), buffer = NULL, NULL);
-	bytes_read = read(fd, temp_buffer, BUFFER_SIZE);
+	bytes_read = read(fd, t_buf, BUFFER_SIZE);
 	while (bytes_read > 0)
 	{
-		(1) && (temp_buffer[bytes_read] = '\0', temp = buffer);
-		if (!buffer)
-			buffer = ft_strdup(temp_buffer);
+		(1) && (t_buf[bytes_read] = '\0', temp = buf);
+		if (!buf)
+			buf = ft_strdup(t_buf);
 		else
 		{
-			buffer = malloc(ft_strlen(temp) + bytes_read + 1);
-			if (!buffer)
-				return (free(temp), temp = NULL, free(temp_buffer), temp_buffer = NULL, NULL);
-			(1) && (cpy(buffer, temp), free(temp), temp = NULL, cat(buffer, temp_buffer));
+			buf = malloc(ft_strlen(temp) + bytes_read + 1);
+			if (!buf)
+				return (free(temp), temp = NULL, free(t_buf), NULL);
+			(1) && (cpy(buf, temp), free(temp), temp = NULL, cat(buf, t_buf));
 		}
-		if (ft_strchr(temp_buffer, '\n'))
+		if (ft_strchr(t_buf, '\n'))
 			break ;
-		bytes_read = read(fd, temp_buffer, BUFFER_SIZE);
+		bytes_read = read(fd, t_buf, BUFFER_SIZE);
 	}
-	(1) && (free(temp_buffer), temp_buffer = NULL);
+	(1) && (free(t_buf), t_buf = NULL);
 	if (bytes_read < 0)
-		return (free(buffer), buffer = NULL, NULL);
-	return (buffer);
+		return (free(buf), buf = NULL, NULL);
+	return (buf);
 }
 
 static void	free_fd_node(t_fd_list **head, int fd)
@@ -123,20 +119,25 @@ char	*get_next_line(int fd)
 	static t_fd_list	*fd_list;
 	t_fd_list			*current;
 	char				*line;
+	char				*t_buf;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	current = get_fd_node(&fd_list, fd);
 	if (!current)
 		return (NULL);
-	current->buffer = read_up_buffer(fd, current->buffer);
-	if (!current->buffer)
+	t_buf = malloc((BUFFER_SIZE + 1) * sizeof(char));
+	if (!t_buf)
 	{
-		free_fd_node(&fd_list, fd);
-		return (NULL);
+		if (current->buffer)
+			(1) && (free(current->buffer), current->buffer = NULL);
+		return (free_fd_node(&fd_list, fd), NULL);
 	}
+	current->buffer = read_up_buffer(fd, current->buffer, t_buf);
+	if (!current->buffer)
+		return (free_fd_node(&fd_list, fd), NULL);
 	line = extract_line(&current->buffer);
 	if (!line)
-		free_fd_node(&fd_list, fd);	
+		free_fd_node(&fd_list, fd);
 	return (line);
 }

@@ -6,7 +6,7 @@
 /*   By: bchafi <bchafi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 16:44:04 by bchafi            #+#    #+#             */
-/*   Updated: 2024/12/03 21:20:03 by bchafi           ###   ########.fr       */
+/*   Updated: 2024/12/04 16:36:45 by bchafi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,49 +30,43 @@ static char	*ft_strncpy(char *dst, const char *src, size_t len)
 	return (dst);
 }
 
-static int	counti(char *str)
+static int	initialize_str(char **str, char *buf)
 {
-	int	i;
-
-	i = 0;
-	while (str[i] && str[i] != '\n')
-		i++;
-	return (i);
+	*str = ft_strdup(buf);
+	if (*str == NULL)
+	{
+		free(buf);
+		buf = NULL;
+		return (0);
+	}
+	return (1);
 }
 
-static char	*read_and_update_str(int fd, char *str)
+static char	*read_and_update_str(int fd, char *str, char *buf, ssize_t byts)
 {
-	char		*buffer;
-	char		*temp;
-	ssize_t		bytes_read;
+	char	*temp;
 
-	buffer = malloc(((size_t)BUFFER_SIZE + 1) * sizeof(char));
-	if (!buffer)
-		return (free(str), str = NULL,NULL);
-	bytes_read = read(fd, buffer, BUFFER_SIZE);
-	while (bytes_read > 0)
+	while (byts > 0)
 	{
-		(1) && (buffer[bytes_read] = '\0', temp = str);
+		(1) && (buf[byts] = '\0', temp = str);
 		if (!str)
 		{
-			str = ft_strdup(buffer);
-			if (str == NULL)
-				return (free(buffer), buffer = NULL, NULL);
+			if (!initialize_str(&str, buf))
+				return (NULL);
 		}
 		else
 		{
-			str = malloc(ft_strlen(temp) + bytes_read + 1);
+			str = malloc(ft_strlen(temp) + byts + 1);
 			if (!str)
-				return (free(temp), temp = NULL, free(buffer), buffer = NULL, NULL);
-			(1) && (ft_strcpy(str, temp), free(temp), ft_strcat(str, buffer));
+				return (free(temp), temp = NULL, free(buf), buf = NULL, NULL);
+			(1) && (ft_strcpy(str, temp), free(temp), ft_strcat(str, buf));
 		}
-		if (ft_strchr(buffer, '\n'))
+		if (ft_strchr(buf, '\n'))
 			break ;
-		bytes_read = read(fd, buffer, BUFFER_SIZE);
+		byts = read(fd, buf, BUFFER_SIZE);
 	}
-	free(buffer);
-	buffer = NULL;
-	if (bytes_read < 0)
+	(1) && (free(buf), buf = NULL);
+	if (byts < 0)
 		return (free(str), str = NULL, NULL);
 	return (str);
 }
@@ -85,8 +79,10 @@ static char	*extract_line(char **str)
 	int		num;
 
 	if (!*str || !**str)
-		return (free(*str), *str = NULL, NULL); // we modifier this 
-	i = counti(*str);
+		return (free(*str), *str = NULL, NULL);
+	i = 0;
+	while ((*str)[i] && (*str)[i] != '\n')
+		i++;
 	num = (*str)[i] == '\n';
 	line = malloc(i + 1 + num);
 	if (!line)
@@ -96,7 +92,7 @@ static char	*extract_line(char **str)
 	temp = *str;
 	*str = ft_strdup(*str + i + num);
 	if (!*str)
-		return (free(line), line = NULL,free(temp), temp = NULL, NULL);
+		return (free(line), line = NULL, free(temp), temp = NULL, NULL);
 	free(temp);
 	return (line);
 }
@@ -104,10 +100,16 @@ static char	*extract_line(char **str)
 char	*get_next_line(int fd)
 {
 	static char	*str;
+	char		*buffer;
+	ssize_t		bytes_read;
 
-	if (fd < 0 || BUFFER_SIZE <= 0)
+	if (fd < 0 || BUFFER_SIZE <= 0 || BUFFER_SIZE >= 2147483647)
 		return (NULL);
-	str = read_and_update_str(fd, str);
+	buffer = malloc(((size_t)BUFFER_SIZE + 1) * sizeof(char));
+	if (!buffer)
+		return (free(str), str = NULL, NULL);
+	bytes_read = read(fd, buffer, BUFFER_SIZE);
+	str = read_and_update_str(fd, str, buffer, bytes_read);
 	if (!str)
 		return (free(str), str = NULL, NULL);
 	return (extract_line(&str));

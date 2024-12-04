@@ -6,7 +6,7 @@
 /*   By: bchafi <bchafi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 16:44:10 by bchafi            #+#    #+#             */
-/*   Updated: 2024/12/03 15:32:20 by bchafi           ###   ########.fr       */
+/*   Updated: 2024/12/04 16:31:34 by bchafi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,9 @@
 # include <fcntl.h>
 # include <unistd.h>
 # include <stdlib.h>
-# include <stdio.h>
 
 # ifndef BUFFER_SIZE
-# define BUFFER_SIZE 100000000
+#  define BUFFER_SIZE 42
 # endif
 
 char	*get_next_line(int fd);
