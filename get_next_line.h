@@ -6,7 +6,7 @@
 /*   By: bchafi <bchafi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 16:44:10 by bchafi            #+#    #+#             */
-/*   Updated: 2024/12/04 16:31:34 by bchafi           ###   ########.fr       */
+/*   Updated: 2024/12/05 16:24:31 by bchafi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 # include <stdlib.h>
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 42
+#  define BUFFER_SIZE 2147483648
 # endif
 
 char	*get_next_line(int fd);

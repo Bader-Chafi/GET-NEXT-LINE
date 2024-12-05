@@ -6,7 +6,7 @@
 /*   By: bchafi <bchafi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 16:43:35 by bchafi            #+#    #+#             */
-/*   Updated: 2024/12/04 16:28:31 by bchafi           ###   ########.fr       */
+/*   Updated: 2024/12/05 20:27:16 by bchafi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,7 @@ char	*get_next_line(int fd)
 	char				*line;
 	char				*t_buf;
 
-	if (fd < 0 || BUFFER_SIZE <= 0)
+	if (fd < 0 || BUFFER_SIZE <= 0 || BUFFER_SIZE > 2147483647)
 		return (NULL);
 	current = get_fd_node(&fd_list, fd);
 	if (!current)
